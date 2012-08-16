@@ -20,4 +20,8 @@ public class Node {
         this.left = null;
         this.right = null;
     }
+    
+    public int getFreq() {
+        return this.freq;
+    }
 }

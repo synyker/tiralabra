@@ -29,7 +29,7 @@ public class Huffman {
         
         while(!q.isEmpty()) {
             Node n = q.poll();
-            System.out.println("merkki: " + n.ch + "freq: " + n.freq);
+            System.out.println("merkki: " + n.ch + " freq: " + n.freq);
         }
         
     }
