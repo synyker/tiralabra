@@ -27,10 +27,17 @@ public class Huffman {
             q.add(nodesArray.get(i));
         }
         
-        while(!q.isEmpty()) {
-            Node n = q.poll();
-            System.out.println("merkki: " + n.ch + " freq: " + n.freq);
+        HuffmanTree huff = new HuffmanTree(q, nodesArray);
+        Node tree = huff.makeTree();
+        huff.makeCodes(tree,"");
+        String[] codes = huff.getCodes();
+        
+        for (int i = 0; i < nodesArray.size(); i++) {
+            System.out.println("Merkki: " + (char)nodesArray.get(i).ch + " Huff: " + codes[nodesArray.get(i).ch]);
+            
         }
+        
+
         
     }
 }

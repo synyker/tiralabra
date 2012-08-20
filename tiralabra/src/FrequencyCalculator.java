@@ -31,7 +31,8 @@ public class FrequencyCalculator {
         int read;
             while(fis.available() > 0) {
                 read = fis.read();
-                freqTable[read] += 1;
+                if(read != 10)
+                    freqTable[read] += 1;
             }
             
     }
@@ -43,14 +44,14 @@ public class FrequencyCalculator {
     public void printFrequencies() {
         System.out.println("Eri merkkejä on: " + nodeTable.size());
         for (int i = 0; i < nodeTable.size(); i++) {
-                System.out.println("Tiedostossa on " + nodeTable.get(i).freq + " kertaa merkki " + (char)nodeTable.get(i).ch);
+                //System.out.println("Tiedostossa on " + nodeTable.get(i).freq + " kertaa merkki " + (char)nodeTable.get(i).ch);
         }
     }
     
     public void maneNodeTable() {
         for (int i = 0; i < freqTable.length; i++) {
             if(freqTable[i] != 0) {
-                System.out.println(i);
+                //System.out.println(i);
                 nodeTable.add(new Node(i, freqTable[i]));
             }
         }
