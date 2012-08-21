@@ -17,7 +17,7 @@ import java.util.PriorityQueue;
 public class Huffman {
     
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        FrequencyCalculator calc = new FrequencyCalculator("test.txt");
+        FrequencyCalculator calc = new FrequencyCalculator("test1.txt");
         calc.maneNodeTable();
         calc.printFrequencies();
         ArrayList<Node> nodesArray = calc.getNodeTable();

@@ -1,0 +1,115 @@
+
+Pizza&Chili Corpus
+Compressed Indexes and their Testbeds
+The Italian mirror | The Chilean mirror
+Home Index Collection Text Collection API Experimental Setup The Initiative Additional Material
+The Text Collection
+
+The choice of the types of texts to be indexed and experimented followed some basic considerations. First, we wished to cover a representative set of application areas where the problem of full-text indexing might be relevant, and for each of them selected texts freely available over the web. Second, we aimed at maintaining the number of these texts reasonably small in order to avoid long experiments and unreadable tables of results. In particular, we have only one text of each type. Finally, the size of the texts has been chosen large enough to make indexing relevant and compression apparent. Note however that experimenting may be performed at different scales, depending on users' RAM, by using the tool cut which allows one to limit the indexed text to any possible length (see below).
+
+Follow the links of each type of text to reach a directory containing one gzipped file, <filename>.gz. Download and gunzip this file to get the original text file, <filename>. The directory also contains other files, named <filename>.<X>MB.gz. These are prefixes of <filename> of <X> megabytes. Of course, some of these files may not exist if <filename> is not long enough.
+
+These are the current collections provided in the Pizza&Chili repository:
+
+    SOURCES (source program code). This file is formed by C/Java source code obtained by concatenating all the .c, .h, .C and .java files of the linux-2.6.11.6 and gcc-4.0.0 distributions. Downloaded on June 9, 2005.
+
+    PITCHES (MIDI pitch values). This file is a sequence of pitch values (bytes in 0-127, plus a few extra special values) obtained from a myriad of MIDI files freely available on Internet. The MIDI files were processed using semex 1.29 tool by Kjell Lemstrom, so as to convert them to IRP format. This is a human-readable tuple format, where the 5th column is the pitch value. Then the pitch values were coded in one byte each and concatenated. Downloaded during April 2005.
+
+    PROTEINS (protein sequences). This file is a sequence of newline-separated protein sequences (without descriptions, just the bare proteins) obtained from the Swissprot database. Each of the 20 amino acids is coded as one uppercase letter. Updated on December 15, 2006.
+
+    DNA (gene DNA sequences). This file is a sequence of newline-separated gene DNA sequences (without descriptions, just the bare DNA code) obtained from files 01hgp10 to 21hgp10, plus 0xhgp10 and 0yhgp10, from Gutenberg Project. Each of the 4 bases is coded as an uppercase letter A,G,C,T, and there are a few occurrences of other special characters. Downloaded on June 9, 2005.
+
+    ENGLISH (english texts). This file is the concatenation of English text files selected from etext02 to etext05 collections of Gutenberg Project. We deleted the headers related to the project so as to leave just the real text. Downloaded on May 4, 2005.
+
+    XML (structured text). This file is an XML that provides bibliographic information on major computer science journals and proceedings and it is obtained from dblp.uni-trier.de. Downloaded on September 27, 2005.
+
+    You can also generate random files of any length and alphabet size via the program gentext detailed below.
+
+To better understand the features of the files constituting the Pizza&Chili corpus, we provide below some statistics data about them. We remind the reader that the inverse probability of matching is one divided by the probability that two text characters chosen at random match. This is a measure of the effective alphabet size (on a uniformly distributed text, it is precisely the alphabet size).
+Collection 	Size (bytes) 	Alphabet size 	Inv match prob
+SOURCES 	210,866,607 	230 	24.77
+PITCHES 	55,832,855 	133 	39.75
+PROTEINS 	1,184,051,855 	27 	17.02
+DNA 	403,927,746 	16 	3.91
+ENGLISH 	2,210,395,553 	239 	15.25
+XML 	294,724,056 	97 	28.73
+
+Since we are dealing with compressed indexes it is useful to have a picture of the empirical entropy and compressibility of the available texts. Compression ratios are all expressed as the percentage of the compressed text size divided by size of the original text. In particular, Gzip (v.1.3.3) gives an idea of compressibility via dictionaries, Bzip2 (v.1.0.3) gives an idea of block-sorting compressibility, and PPMDi gives an idea of Partial-Match-based compressors. A copy of these compressors is available here. Since compressibility is related to kth order empirical entropy, we provide it as number of bits per input symbol and, in parentheses, as the corresponding compression ratio.
+Collection 	Size (Mb) 	gzip -1 	gzip -9 	bzip -1 	bzip -9 	ppmdi -l 0 	ppmdi -l 9
+SOURCES 	50.00 	28.95% 	23.29% 	22.18% 	19.79% 	19.35% 	16.71%
+	100.00 	28.53% 	22.84% 	21.63% 	19.26% 	18.90% 	16.36%
+	200.00 	28.01% 	22.38% 	21.30% 	18.67% 	18.51% 	15.82%
+	201.10 	28.01% 	22.38% 	21.30% 	18.68% 	18.51% 	15.83%
+PITCHES 	50.00 	33.92% 	33.57% 	34.99% 	36.12% 	30.15% 	30.49%
+	53.25 	30.59% 	30.24% 	34.62% 	35.73% 	29.81% 	30.31%
+PROTEINS 	50.00 	49.71% 	47.39% 	46.25% 	45.56% 	43.77% 	42.05%
+	100.00 	51.56% 	49.32% 	47.75% 	46.99% 	45.52% 	43.71%
+	200.00 	48.86% 	46.51% 	45.74% 	44.80% 	45.52% 	43.71%
+	1,129.20 	47.11% 	44.65% 	44.28% 	43.14% 	41.20% 	39.03%
+DNA 	50.00 	32.50% 	27.05% 	26.55% 	25.98% 	23.82% 	24.31%
+	100.00 	32.51% 	27.05% 	26.58% 	26.00% 	23.81% 	24.35%
+	200.00 	32.51% 	27.02% 	26.57% 	25.95% 	23.79% 	24.29%
+	385.22 	32.46% 	26.88% 	26.42% 	25.76% 	23.69% 	24.03%
+ENGLISH 	50.00 	44.90% 	37.52% 	32.85% 	28.40% 	29.91% 	24.35%
+	100.00 	44.91% 	37.61% 	32.84% 	28.07% 	29.94% 	24.16%
+	200.00 	44.99% 	37.64% 	32.83% 	28.07% 	29.93% 	24.46%
+	1,024.00 	45.12% 	37.79% 	32.90% 	28.33% 	30.04% 	24.98%
+	2,108.00 	45.07% 	37.76% 	32.87% 	28.35% 	30.01% 	25.05%
+XML 	50.00 	21,46% 	17.23% 	14.31% 	11.22% 	12.10% 	9.21%
+	100.00 	21.11% 	16.95% 	14.13% 	11.12% 	11.94% 	9.14%
+	200.00 	21.19% 	17.12% 	14.37% 	11.36% 	12.14% 	9.33%
+	294.72 	21.01% 	17.05% 	14.35% 	11.39% 	12.15% 	9.35%
+
+Compressibility measures related to empirical entropy. Hk stands for the empirical entropy of order k, measured in number of bits per input symbol and, in parentheses, the corresponding compression ratio. We also show the number of contexts of each order, which gives an idea of the cost to represent each model.
+Collection 	Size (Mb) 	H0 	H1 	H2 	H3 	H4 	H5
+SOURCES 	50.00 	5.537 (69.21%) 	4.038 (50.48%) 	3.012 (37.65%) 	2.214 (27.68%) 	1.714 (21.43%) 	1.372 (17.15%)
+	  	(1 -empty- context) 	(227 contexts) 	(8,540 contexts) 	(161,883 contexts) 	(872,929 contexts) 	(2,280,455 contexts)
+	100.00 	5.540 (69.25%) 	4.017 (50.21%) 	3.005 (37.56%) 	2.257 (28.21%) 	1.785 (22.31%) 	1.457 (18.21%)
+	  	(1 -empty- context) 	(227 contexts) 	(8,893 contexts) 	(195,599 contexts) 	(1,219,914 contexts) 	(3,463,160 contexts)
+	200.00 	5.465 (68.31%) 	4.077 (50.96%) 	3.102 (38.78%) 	2.337 (29.21%) 	1.852 (23.15%) 	1.518 (18.98%)
+	  	(1 -empty- context) 	(230 contexts) 	(9,525 contexts) 	(253,831 contexts) 	(1,719,387 contexts) 	(5,252,826 contexts)
+	201.10 	5.465 (68.31%) 	4.077 (50.96%) 	3.103 (38.79%) 	2.338 (29.23%) 	1.853 (23.16%) 	1.518 (18.98%)
+	  	(1 -empty- context) 	(230 contexts) 	(9,538 contexts) 	(254,670 contexts) 	(1,725,894 contexts) 	(5,274,064 contexts)
+PITCHES 	50.00 	5.633 (70.41%) 	4.734 (59.18%) 	4.139 (51.74%) 	3.457 (43.21%) 	2.334 (29.18%) 	1.259 (15.74%)
+	  	(1 -empty- context) 	(133 contexts) 	(10,946 contexts) 	(345,078 contexts) 	(3,845,792 contexts) 	(11,715,555 contexts)
+	53.25 	5.628 (70.35%) 	4.716 (58.95%) 	4.119 (51.49%) 	3.443 (43.04%) 	2.341 (29.26%) 	1.275 (15.94%)
+	  	(1 -empty- context) 	(133 contexts) 	(10,988 contexts) 	(347,802 contexts) 	(3,901,537 contexts) 	(11,987,515 contexts)
+PROTEINS 	50.00 	4.195 (52.44%) 	4.173 (52.16%) 	4.146 (51.82%) 	4.034 (50.43%) 	3.728 (46.61%) 	2.705 (33.81%)
+	  	(1 -empty- context) 	(25 contexts) 	(591 contexts) 	(10,938 contexts) 	(206,638 contexts) 	(3,108,603 contexts)
+	100.00 	4.190 (52.37%) 	4.168 (52.10%) 	4.150 (51.88%) 	4.073 (50.92%) 	3.835 (47.94%) 	3.042 (38.02%)
+	  	(1 -empty- context) 	(25 contexts) 	(591 contexts) 	(11,058 contexts) 	(211,205 contexts) 	(3,339,109 contexts)
+	200.00 	4.201 (52.51%) 	4.178 (52.22%) 	4.156 (51.95%) 	4.066 (50.82%) 	3.826 (47.82%) 	3.162 (39.53%)
+	  	(1 -empty- context) 	(25 contexts) 	(607 contexts) 	(11,607 contexts) 	(224,132 contexts) 	(3,623,281 contexts)
+	1,129.20 	4.206 (52.57%) 	4.185 (52.31%) 	4.169 (52.11%) 	4.098 (51.22%) 	3.878 (48.47%) 	3.363 (42.04%)
+	  	(1 -empty- context) 	(27 contexts) 	(663 contexts) 	(13,896 contexts) 	(244,322 contexts) 	(4,397,522 contexts)
+DNA 	50.00 	1.982 (24.78%) 	1.935 (24.19%) 	1.925 (24.06%) 	1.920 (24.00%) 	1.913 (23.91%) 	1.903 (23.79%)
+	  	(1 -empty- context) 	(16 contexts) 	(117 contexts) 	(486 contexts) 	(1,395 contexts) 	(3,302 contexts)
+	100.00 	1.977 (24.71%) 	1.932 (24.15%) 	1.922 (24.03%) 	1.918 (23.98%) 	1.911 (23.89%) 	1.902 (23.78%)
+	  	(1 -empty- context) 	(16 contexts) 	(117 contexts) 	(500 contexts) 	(1,512 contexts) 	(3,752 contexts)
+	200.00 	1.974 (24.68%) 	1.930 (24.13%) 	1.920 (24.00%) 	1.916 (23.95%) 	1.910 (23.88%) 	1.901 (23.76%)
+	  	(1 -empty- context) 	(16 contexts) 	(152 contexts) 	(683 contexts) 	(2,222 contexts) 	(5,892 contexts)
+	385.22 	1.983 (24.79%) 	1.937 (24.21%) 	1.926 (24.08%) 	1.921 (24.01%) 	1.913 (23.91%) 	1.902 (23.78%)
+	  	(1 -empty- context) 	(16 contexts) 	(157 contexts) 	(755 contexts) 	(2,596 contexts) 	(7,348 contexts)
+ENGLISH 	50.00 	4.529 (56.61%) 	3.606 (45.08%) 	2.922 (36.53%) 	2.386 (29.83%) 	2.013 (25.16%) 	1.764 (22.05%)
+	  	(1 -empty- context) 	(176 contexts) 	(5,995 contexts) 	(58,720 contexts) 	(307,710 contexts) 	(1,008,183 contexts)
+	100.00 	4.556 (56.95%) 	3.630 (45.38%) 	2.949 (36.86%) 	2.417 (30.21%) 	2.047 (25.59%) 	1.807 (22.59%)
+	  	(1 -empty- context) 	(215 contexts) 	(9,716 contexts) 	(87,745 contexts) 	(474,831 contexts) 	(1,631,392 contexts)
+	200.00 	4.525 (56.56%) 	3.620 (45.25%) 	2.948 (36.85%) 	2.422 (30.28%) 	2.063 (25.79%) 	1.839 (22.99%)
+	  	(1 -empty- context) 	(225 contexts) 	(10,829 contexts) 	(102,666 contexts) 	(589,230 contexts) 	(2,150,525 contexts)
+	1,024.00 	4.526 (56.58%) 	3.626 (45.33%) 	2.953 (36.91%) 	2.434 (30.43%) 	2.088 (26.10%) 	1.882 (23.53%)
+	  	(1 -empty- context) 	(237 contexts) 	(15,626 contexts) 	(163,662 contexts) 	(1,056,247 contexts) 	(4,487,407 contexts)
+	2,108.00 	4.525 (56.56%) 	3.629 (45.36%) 	2.953 (36.91%) 	2.436 (30.45%) 	2.095 (26.19%) 	1.894 (23.68%)
+	  	(1 -empty- context) 	(239 contexts) 	(17,293 contexts) 	(200,944 contexts) 	(1,335,305 contexts) 	(6,010,453 contexts)
+XML 	50.00 	5.230 (65.37%) 	3.294 (41.17%) 	2.007 (25.09%) 	1.322 (16.53%) 	0.956 (11.95%) 	0.735 (9.19%)
+	  	(1 -empty- context) 	(96 contexts) 	(6,109 contexts) 	(93,463 contexts) 	(461.363 contexts) 	(1,207,312 contexts)
+	100.00 	5.228 (65.35%) 	3..336 (41.69%) 	2.070 (25.88%) 	1.374 (17.18%) 	0.996 (12.45%) 	0.770 (9.63%)
+	  	(1 -empty- context) 	(96 contexts) 	(6,659 contexts) 	(115,926 contexts) 	(644.585 contexts) 	(1,808,284 contexts)
+	200.00 	5.257 (65.72%) 	3.480 (43.50%) 	2.170 (27.13%) 	1.434 (17.93%) 	1.045 (13.07%) 	0.817 (10.21%)
+	  	(1 -empty- context) 	(96 contexts) 	(7,049 contexts) 	(141,736 contexts) 	(907,678 contexts) 	(2,714,923 contexts)
+	294.72 	5.262 (65.77%) 	3.496 (43.70%) 	2.183 (27.29%) 	1.448 (18.11%) 	1.058 (13.23%) 	0.830 (10.37%)
+	  	(1 -empty- context) 	(97 contexts) 	(7,191 contexts) 	(152,393 contexts) 	(1,040,864 contexts) 	( 3,245,554 contexts)
+
+
+Send Mail to Us | © P. Ferragina and G. Navarro, Last update: September, 2005.
+
+
