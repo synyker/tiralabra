@@ -1,0 +1,18 @@
+1. Mitä algoritmeja ja tietorakenteita toteutat työssäsi
+
+Toteutan harjoitustyössä Huffman ja LempelZiv-78 
+
+
+2. Mitä ongelmaa ratkaiset ja miksi valitsit kyseiset algoritmit/tietorakenteet
+
+
+
+3. Mitä syötteitä ohjelma saa ja miten näitä käytetään
+
+
+
+4. Tavoitteena olevat aika- ja tilavaativuudet (m.m. O-analyysi)
+
+
+
+5. Lähteet
