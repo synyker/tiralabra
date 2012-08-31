@@ -17,9 +17,10 @@ import java.util.PriorityQueue;
 public class Huffman {
     
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        FrequencyCalculator calc = new FrequencyCalculator("test1.txt");
-        calc.maneNodeTable();
-        calc.printFrequencies();
+        String filename = "test3.txt";
+        FrequencyCalculator calc = new FrequencyCalculator(filename);
+        calc.makeNodeTable();
+        //calc.printFrequencies();
         ArrayList<Node> nodesArray = calc.getNodeTable();
 
         PriorityQueue<Node> q = new PriorityQueue<Node>(nodesArray.size(), new NodeComparator());
@@ -31,6 +32,10 @@ public class Huffman {
         Node tree = huff.makeTree();
         huff.makeCodes(tree,"");
         String[] codes = huff.getCodes();
+        
+        FileWriter fw = new FileWriter(filename, codes);
+        fw.OriginalBytesToHuffmanBits();
+        fw.makeBytes();
         
         for (int i = 0; i < nodesArray.size(); i++) {
             System.out.println("Merkki: " + (char)nodesArray.get(i).ch + " Huff: " + codes[nodesArray.get(i).ch]);
