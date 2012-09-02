@@ -17,7 +17,7 @@ import java.util.PriorityQueue;
 public class Huffman {
     
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        String filename = "test.txt";
+        String filename = "test7.txt";
         FrequencyCalculator calc = new FrequencyCalculator(filename);
         calc.makeNodeTable();
         //calc.printFrequencies();
@@ -38,26 +38,31 @@ public class Huffman {
         fw.write();
         fw.closeStreams();
         
-//        System.out.println("Ennen:");
-//        for (int i = 0; i < nodesArray.size(); i++) {
-//            System.out.println("Merkki: " + nodesArray.get(i).ch + " Huff: " + codes[nodesArray.get(i).ch]);
-//            
-//        }
-//        
-        FileReader fr = new FileReader("compressed.bin");
-        fr.readDictionaryLength();
-        fr.readCodes();
+        System.out.println("Ennen:");
+        for (int i = 0; i < nodesArray.size(); i++) {
+            System.out.println("Merkki: " + nodesArray.get(i).ch + " Huff: " + codes[nodesArray.get(i).ch]);
+            
+        }
         
-//        System.out.println("Jälkeen:");
-//        for (int i = 0; i < fr.codes.length; i++) {
-//            if(fr.codes[i] != null)
-//            System.out.println("Merkki: " + i + " Huff: " + fr.codes[i]);
-//            
-//        }
+        FileReader fr = new FileReader("compressed.bin");
+        //System.out.println(fr.fis.available());
+        fr.readDictionaryLength();
+        //System.out.println(fr.fis.available());
+        fr.readCodes();
+        //System.out.println(fr.fis.available());
+        
+        System.out.println("Jälkeen:");
+        for (int i = 0; i < fr.codes.length; i++) {
+            if(fr.codes[i] != null)
+            System.out.println("Merkki: " + i + " Huff: " + fr.codes[i]);
+            
+        }
         fr.handleCodes();
+        //System.out.println(fr.fis.available());
         fr.readFile();
-        System.out.println("tavuja luettu: " + fr.totalread);
-        System.out.println("tavuja kirjoitettu: " + fr.totalwritten);
+        //System.out.println(fr.fis.available());
+        //System.out.println("tavuja luettu: " + fr.totalread);
+        //System.out.println("tavuja kirjoitettu: " + fr.totalwritten);
         
 
         

@@ -52,14 +52,14 @@ public class FileReader {
         String code;
         int bytesRead = 0;
 
-        while (bytesRead <= dictionaryLength) {
+        while (bytesRead < dictionaryLength) {
             code = "";
             read = fis.read();
             bytesRead += 1;
             index = read;
             read = fis.read();
             bytesRead += 1;
-            while (read != '|' && bytesRead <= dictionaryLength) {
+            while (read != '|' && bytesRead < dictionaryLength) {
                 code += (char) read;
                 read = fis.read();
                 bytesRead += 1;
@@ -124,7 +124,7 @@ public class FileReader {
                 char lastByte = (char)fis.read();
                 totalread += 1;
                 int trashBytes = Integer.parseInt(""+lastByte);
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < trashBytes; i++) {
                     queue.remove();
                 }
             }
@@ -146,6 +146,7 @@ public class FileReader {
                 x = x.left;
                 if(x.left == null && x.right == null) {
                     out.write(x.ch);
+                    System.out.println((char)x.ch);
                     totalwritten += 1;
                     return;
                 }
@@ -154,6 +155,7 @@ public class FileReader {
                 x = x.right;
                 if(x.left == null && x.right == null) {
                     out.write(x.ch);
+                    System.out.println((char)x.ch);
                     totalwritten += 1;
                     return;
                 }
