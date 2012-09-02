@@ -5,14 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author jonnaira
+ * The class used for compressing the input file.
+ * @author Jonne Airaksinen
  */
 public class FileWriter {
     
@@ -25,6 +20,17 @@ public class FileWriter {
     BitQueue queue;
     int trashBits = 0;
     
+    
+    /**
+     * The constructor initializes all the required variables and the input and output streams.
+     * Gets the filename of the input file and a array of Strings containing the 
+     * Huffman-codes of all the characters in the input file as parameters.
+     * 
+     * @param filename name of the original input file.
+     * @param codes String-array containing Huffman-codes for all characters in the input file.
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public FileWriter(String filename, String[] codes) throws FileNotFoundException, IOException {
         this.filename = filename;
         this.codes = codes;
@@ -36,6 +42,23 @@ public class FileWriter {
               
     }
     
+    /**
+     * Reads the input file, then Huffman-encodes the bytes and writes them.
+     * Initializes the queue used as a buffer for the bits that are written into
+     * the compressed file.
+     * 
+     * Reads the input file byte by byte, adding the corresponding Huffman-codes 
+     * into the queue. When the queue has 8 or more bits, the method makeBytes 
+     * is called for.
+     * 
+     * When all the bytes in the input file are read, the remaining bits in the 
+     * queue along with the necessary amount of trash bits are written into the 
+     * compressed file as the final compressed byte.
+     * 
+     * After this, the amount of trash bits is written as the very last byte of
+     * the compressed file.
+     * @throws IOException 
+     */
     public void write() throws IOException {
 
         queue = new BitQueue(30);
@@ -68,6 +91,20 @@ public class FileWriter {
         out.write(ch);
     }
     
+    
+    /**
+     * Writes the Huffman-codes into the beginning of the compressed file.
+     * Writes every Huffman-code with a corresponding character in the input 
+     * file into the compressed file.
+     * 
+     * Uses the FileOutputStream to write the character followed by its' 
+     * Huffman-code, then a '|'-character to separate characters and codes from 
+     * each other. 
+     * 
+     * The character code always consists of one byte, but the length of the 
+     * length of the Huffman-code for character varies, thus a separator is needed.
+     * @throws IOException 
+     */
     public void writeCodesToFile() throws IOException {
         String dict = "";
         for (int i = 0; i < codes.length; i++) {

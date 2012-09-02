@@ -4,13 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/*
- * To change this template, choose Tools | Templates and open the template in
- * the editor.
- */
+
 /**
- *
- * @author kristalongi
+ * Used for reading the file and uncompressing it.
+ * @author Jonne Airaksinen
  */
 public class FileReader {
 
@@ -25,6 +22,13 @@ public class FileReader {
     int totalwritten = 0;
     int totalread = 0;
 
+    /**
+     * The constructor initializes everything required for uncompressing the file.
+     * Gets only a filename as a parameter, initializes the Huffman-tree, input 
+     * and output streams and the array for Huffman-codes.
+     * @param filename the filename for the uncompressed file.
+     * @throws FileNotFoundException 
+     */
     public FileReader(String filename) throws FileNotFoundException {
         this.filename = filename;
         root = new Node(0);
@@ -33,6 +37,14 @@ public class FileReader {
         codes = new String[256];
     }
 
+    /**
+     * Reads the length of the Huffman-dictionary from the beginning of the file.
+     * Reads bytes into a string until it finds a '|'-character.
+     * Then parses the string into an integer that determines the length of the 
+     * character-code pairs that follow after the length of the dictionary in 
+     * the file.
+     * @throws IOException 
+     */
     public void readDictionaryLength() throws IOException {
         int read;
         String length = "";
@@ -45,6 +57,16 @@ public class FileReader {
         dictionaryLength = Integer.parseInt(length);
     }
 
+    /**
+     * Reads the Huffman-codes from the compressed file.
+     * Reads the character code, saves it into the variable index.
+     * Then proceeds to read the Huffman-code, which is followed by a '|'-character.
+     * The length of this dictionary is saved into the variable "dictionaryLength" 
+     * earlier, the while loop stops according to this variable.
+     * The codes are read from the compressed file and again saved into a String
+     * array.
+     * @throws IOException 
+     */
     public void readCodes() throws IOException {
 
         int read;
@@ -68,6 +90,11 @@ public class FileReader {
         }
     }
 
+    /**
+     * Goes through the array of Strings containing the Huffman-codes.
+     * A simple for-loop that ignores null values in the array. Calls the method
+     * makeNode for every non-null code.
+     */
     public void handleCodes() {
 
         for (int i = 0; i < codes.length; i++) {
@@ -77,6 +104,21 @@ public class FileReader {
         }
     }
 
+    /**
+     * Reconstructs the Huffman-tree using the codes.
+     * Uses the Huffman-codes obtained from the compressed file to reconstruct 
+     * the Huffman-tree. This is required for making sense of the bits written 
+     * into the compressed file.
+     * 
+     * Creates child-nodes for the previously initialized root-node, if necessary.
+     * If the child-nodes already exist, it skips to the next level of the tree.
+     * 
+     * When the for loop reaches the last character in the String code, it sets
+     * the character with code index as the character of this leaf-node.
+     * @param code the Huffman-code for the character defined by variable index.
+     * @param index the character code for the character that is currently being
+     *              added to the tree.
+     */
     public void makeNode(String code, int index) {
         Node x = root;
 
@@ -106,6 +148,22 @@ public class FileReader {
         }
     }
 
+    /**
+     * Reads the actual compressed data from the compressed file.
+     * Reads bytes, converts them into bits and inserts them into a queue. 
+     * The maximum capacity of the queue is 256, because that is the potential 
+     * maximum length of a Huffman-code(?). 
+     * 
+     * The method reads the queue full of bits and then proceeds to call for the
+     * writeToFile-method, which uncompresses one character worth of bits.
+     * 
+     * When the FileInputStream has only 1 byte left, it is read into a separate
+     * variable. This variable called trashBits tells the amount of bits with no
+     * meaning, used to fill the last byte. Then this amount of bits are removed
+     * from the queue, so they won't interfere with the uncompressing of the file.
+     * @throws IOException 
+     */
+    
     public void readFile() throws IOException {
         queue = new BitQueue(256);
         int read;
@@ -123,8 +181,8 @@ public class FileReader {
             if(fis.available() == 1) {
                 char lastByte = (char)fis.read();
                 totalread += 1;
-                int trashBytes = Integer.parseInt(""+lastByte);
-                for (int i = 0; i < trashBytes; i++) {
+                trashBits = Integer.parseInt(""+lastByte);
+                for (int i = 0; i < trashBits; i++) {
                     queue.remove();
                 }
             }
@@ -137,6 +195,17 @@ public class FileReader {
         }
     }
     
+    
+    /**
+     * Handles the actual uncompressing of the file.
+     * Polls the queue of bits and navigates the Huffman-tree according to the 
+     * boolean value. When false, go left; when true, go right.
+     * 
+     * When the method reaches a node that has no children, i.e. is a leaf-node, 
+     * the character saved to the node is written to the output file using
+     * FileOutputStream. After doing this, the method returns.
+     * @throws IOException 
+     */
     public void writeToFile() throws IOException {
         Node x = root;
         boolean bit;
@@ -146,7 +215,6 @@ public class FileReader {
                 x = x.left;
                 if(x.left == null && x.right == null) {
                     out.write(x.ch);
-                    System.out.println((char)x.ch);
                     totalwritten += 1;
                     return;
                 }
@@ -155,7 +223,6 @@ public class FileReader {
                 x = x.right;
                 if(x.left == null && x.right == null) {
                     out.write(x.ch);
-                    System.out.println((char)x.ch);
                     totalwritten += 1;
                     return;
                 }
@@ -163,6 +230,11 @@ public class FileReader {
         }
     }
     
+    /**
+     * A method used for converting bytes into bits.
+     * @param data integer value of the byte.
+     * @return a boolean array containing the 8 bits in the original byte.
+     */
     public static boolean[] byteToBits(int data) {
         if (data < 0 || 255 < data) {
             throw new IllegalArgumentException("" + data);

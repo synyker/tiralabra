@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
  */
 
 /**
- *
+ * The main class. Creates instances of all the required classes.
  * @author jonnaira
  */
 public class Huffman {
