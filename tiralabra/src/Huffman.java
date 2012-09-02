@@ -34,11 +34,12 @@ public class Huffman {
         String[] codes = huff.getCodes();
         
         FileWriter fw = new FileWriter(filename, codes);
-        fw.OriginalBytesToHuffmanBits();
-        fw.makeBytes();
+        fw.writeCodesToFile();
+        fw.write();
+        fw.closeStreams();
         
         for (int i = 0; i < nodesArray.size(); i++) {
-            System.out.println("Merkki: " + (char)nodesArray.get(i).ch + " Huff: " + codes[nodesArray.get(i).ch]);
+            System.out.println("Merkki: " + nodesArray.get(i).ch + " Huff: " + codes[nodesArray.get(i).ch]);
             
         }
         

@@ -22,8 +22,7 @@ public class FileWriter {
     FileOutputStream out;
     File read;
     File write;
-    boolean[] huffbits;
-    int totalbits;
+    BitQueue queue;
     int trashBits;
     
     public FileWriter(String filename, String[] codes) throws FileNotFoundException, IOException {
@@ -33,15 +32,13 @@ public class FileWriter {
         fis = new FileInputStream(read);
         write = new File("compressed.bin");
         out = new FileOutputStream(write);
-        
-        
+
+              
     }
     
-    public void OriginalBytesToHuffmanBits() throws IOException {
-       
-        huffbits = new boolean[fis.available()*8];
-        int orig = fis.available()*8;
-        int bits = 0;
+    public void write() throws IOException {
+
+        queue = new BitQueue();
         int readByte;
         String code;
         while (fis.available() > 0) {
@@ -49,19 +46,36 @@ public class FileWriter {
             code = codes[readByte];
             for (int i = 0; i < code.length(); i++) {
                 if(code.charAt(i) == '0') {
-                    huffbits[bits] = false;
-                    bits+=1;
+                    queue.add(false);                    
                 }
                 else if (code.charAt(i) == '1') {
-                    huffbits[bits] = true;
-                    bits+=1;
+                    queue.add(true);
                 }
             }
+            if(queue.size >= 8)
+                makeBytes();
         }
-        System.out.println("Bittejä: "+bits);
-        System.out.println("Alkuperäisesti: "+orig);
-        totalbits = bits;
-        fis.close();
+        
+        if(queue.size > 0) {
+            trashBits = 8-queue.size();
+            makeBytes();
+        }
+        
+        //fis.close();
+        //out.close();
+    }
+    
+    public void writeCodesToFile() throws IOException {
+        for (int i = 0; i < codes.length; i++) {
+            if (codes[i] != null) {
+                out.write(i);
+                out.write((byte) ' ');
+                for (int j = 0; j < codes[i].length(); j++) {
+                    out.write(codes[i].charAt(j));
+                }
+                out.write((byte) '|');
+            }
+        }
     }
     
     public void makeBytes() throws IOException {
@@ -69,24 +83,22 @@ public class FileWriter {
         int byteBits;
         int data;
         boolean[] bitTable = new boolean[8];
-        while(bitsWritten < totalbits) {
-            bitTable = new boolean[8];
-            if(totalbits-bitsWritten > 8)
-                byteBits = 8;
-            else {
-                byteBits = totalbits-bitsWritten;
-                trashBits = 8-byteBits;
-            }
-            
-            for (int i = 0; i < byteBits; i++) {
-                bitTable[i] = huffbits[bitsWritten];
-                bitsWritten += 1;
-            }
-            byte b = (byte) bitsToByte(bitTable);
-            out.write(b);
+        bitTable = new boolean[8];
+        int poll;
+        
+        if(queue.size >= 8)
+            poll = 8;
+        else
+            poll = queue.size();
+        
+        for (int i = 0; i < poll; i++) {
+            bitTable[i] = queue.poll();
         }
         
-        out.close();
+        //if(fis.available() == 0)
+        //    System.out.println("kulli");
+        byte b = (byte) bitsToByte(bitTable);
+        out.write(b);
     }
     
     public static int bitsToByte(boolean[] bits) {
@@ -105,6 +117,11 @@ public class FileWriter {
     
     public void WriteBytes() {
         
+    }
+    
+    public void closeStreams() throws IOException {
+        fis.close();
+        out.close();
     }
     
     
