@@ -29,6 +29,10 @@ public class Node {
         this.right = null;
     }
     
+    public void setChar(int ch) {
+        this.ch = ch;
+    }
+    
     public int getFreq() {
         return this.freq;
     }
@@ -36,7 +40,7 @@ public class Node {
     public void setLeft(Node left) {
         this.left = left;
     }
-    
+        
     public void setRight(Node right) {
         this.right = right;
     }

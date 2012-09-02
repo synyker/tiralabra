@@ -23,7 +23,7 @@ public class FileWriter {
     File read;
     File write;
     BitQueue queue;
-    int trashBits;
+    int trashBits = 0;
     
     public FileWriter(String filename, String[] codes) throws FileNotFoundException, IOException {
         this.filename = filename;
@@ -38,11 +38,13 @@ public class FileWriter {
     
     public void write() throws IOException {
 
-        queue = new BitQueue();
+        queue = new BitQueue(30);
         int readByte;
+        int total = 0;
         String code;
         while (fis.available() > 0) {
             readByte = fis.read();
+            total += 1;
             code = codes[readByte];
             for (int i = 0; i < code.length(); i++) {
                 if(code.charAt(i) == '0') {
@@ -60,21 +62,31 @@ public class FileWriter {
             trashBits = 8-queue.size();
             makeBytes();
         }
-        
-        //fis.close();
-        //out.close();
+        String trash = "";
+        trash+=trashBits;
+        char ch = trash.charAt(0);
+        out.write(ch);
     }
     
     public void writeCodesToFile() throws IOException {
+        String dict = "";
         for (int i = 0; i < codes.length; i++) {
             if (codes[i] != null) {
-                out.write(i);
-                out.write((byte) ' ');
+                dict += (char)i;
                 for (int j = 0; j < codes[i].length(); j++) {
-                    out.write(codes[i].charAt(j));
+                    dict+=codes[i].charAt(j);
                 }
-                out.write((byte) '|');
+                dict+='|';
             }
+        }
+        String length = "";
+        length += dict.length();
+        for (int i = 0; i < length.length(); i++) {
+            out.write(length.charAt(i));
+        }
+        out.write('|');
+        for (int i = 0; i < dict.length(); i++) {
+            out.write(dict.charAt(i));
         }
     }
     
@@ -83,7 +95,6 @@ public class FileWriter {
         int byteBits;
         int data;
         boolean[] bitTable = new boolean[8];
-        bitTable = new boolean[8];
         int poll;
         
         if(queue.size >= 8)
@@ -93,10 +104,8 @@ public class FileWriter {
         
         for (int i = 0; i < poll; i++) {
             bitTable[i] = queue.poll();
-        }
-        
-        //if(fis.available() == 0)
-        //    System.out.println("kulli");
+        }  
+      
         byte b = (byte) bitsToByte(bitTable);
         out.write(b);
     }

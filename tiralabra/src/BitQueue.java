@@ -14,8 +14,8 @@ public class BitQueue {
     int tail;
     int size;
     
-    public BitQueue() {
-        queue = new boolean[30];
+    public BitQueue(int size) {
+        queue = new boolean[size];
         head = 0;
         tail = 0;
         size = 0;
@@ -28,6 +28,16 @@ public class BitQueue {
             tail = 0;
         else
             tail+=1;
+    }
+    
+    public void remove() {
+        if(size == 0)
+            return;
+        size -= 1;
+        if(tail-1 < 0)
+            tail = queue.length-1;
+        else
+            tail-=1;
     }
     
     public boolean poll() {
