@@ -20,7 +20,7 @@ public class FrequencyCalculator {
     
     String filename;
     int[] freqTable;
-    ArrayList<Node> nodeTable = new ArrayList<Node>();
+    Node[] nodeTable = new Node[256];
     
     public FrequencyCalculator(String filename) throws FileNotFoundException, IOException {
         this.filename = filename;
@@ -31,28 +31,18 @@ public class FrequencyCalculator {
         int read;
         while (fis.available() > 0) {
             read = fis.read();
-            //if(read != 10)
             freqTable[read] += 1;
         }
         fis.close();
     }
     
-    public ArrayList<Node> getNodeTable() {
+    public Node[] getNodeTable() {
         return this.nodeTable;
-    }
-    
-    public void printFrequencies() {
-        System.out.println("Eri merkkejä on: " + nodeTable.size());
-        for (int i = 0; i < nodeTable.size(); i++) {
-                System.out.println("Tiedostossa on " + nodeTable.get(i).freq + " kertaa merkki " + (char)nodeTable.get(i).ch);
-        }
     }
     
     public void makeNodeTable() {
         for (int i = 0; i < freqTable.length; i++) {
-            if(freqTable[i] != 0) {
-                nodeTable.add(new Node(i, freqTable[i]));
-            }
+                nodeTable[i] = new Node(i,freqTable[i]);
         }
     }
 }

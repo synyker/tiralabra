@@ -13,35 +13,40 @@ import java.util.PriorityQueue;
  */
 public class HuffmanTree {
     
+    private HuffmanHeap heap;
     private PriorityQueue q;
-    private ArrayList<Node> leaves;
+    private Node[] leaves;
     private String[] codes = new String[256];
     
-    public HuffmanTree(PriorityQueue q, ArrayList<Node> leaves) {
-        this.q = q;
+    public HuffmanTree(HuffmanHeap heap, Node[] leaves) {
         this.leaves = leaves;
+        this.heap = heap;
     }
     
     
     public void printQueue () {
-        while(!q.isEmpty()) {
-            Node n = (Node)q.poll();
+        while(!heap.isEmpty()) {
+            Node n = heap.delMin();
             System.out.println("merkki: " + n.ch + " freq: " + n.freq);
         }
     }
     
     public Node makeTree() {
+        
+        
         while(true) {
-            Node x = (Node)q.poll();
-            Node y = (Node)q.poll();
-            Node z = new Node(x.getFreq()+y.getFreq());
-            z.setLeft(x);
-            x.setParent(z);
-            z.setRight(y);
-            y.setParent(z);
-            q.add(z);
-            if(q.size() == 1) {
-                Node root = (Node)q.poll();
+            if (heap.getSize() >= 2) {
+                Node x = heap.delMin();
+                Node y = heap.delMin();
+                Node z = new Node(x.getFreq() + y.getFreq());
+                z.setLeft(x);
+                x.setParent(z);
+                z.setRight(y);
+                y.setParent(z);
+                heap.insert(z);
+            }
+            if(heap.getSize() == 1) {
+                Node root = heap.delMin();
                 root.setRoot();
                 return root;
             }

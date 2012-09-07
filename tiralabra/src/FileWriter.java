@@ -161,10 +161,6 @@ public class FileWriter {
         return data;
     }
     
-    public void WriteBytes() {
-        
-    }
-    
     public void closeStreams() throws IOException {
         fis.close();
         out.close();
