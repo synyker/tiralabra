@@ -74,7 +74,7 @@ public class FileReader {
         String code;
         int bytesRead = 0;
 
-        while (bytesRead <= dictionaryLength) {
+        while (bytesRead < dictionaryLength) {
             code = "";
             read = fis.read();
             bytesRead += 1;
@@ -170,7 +170,7 @@ public class FileReader {
         boolean[] bitsFromByte;
         
         while(true) {
-            while(fis.available() > 1 && queue.size < 256) {
+            while(fis.available() > 1 && queue.size < 256-7) {
                 read = fis.read();
                 totalread += 1;
                 bitsFromByte = byteToBits(read);

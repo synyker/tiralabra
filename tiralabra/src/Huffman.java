@@ -17,7 +17,7 @@ import java.util.PriorityQueue;
 public class Huffman {
     
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        String filename = "test7.txt";
+        String filename = "test1.txt";
         FrequencyCalculator calc = new FrequencyCalculator(filename);
         calc.makeNodeTable();
         Node[] nodesArray = calc.getNodeTable();
@@ -43,11 +43,11 @@ public class Huffman {
         fw.closeStreams();
         
         
-//        System.out.println("Ennen:");
-//        for (int i = 0; i < nodesArray.length; i++) {
-//            if(nodesArray[i].freq != 0)
-//                System.out.println("Merkki: " + nodesArray[i].ch + " Huff: " + codes[nodesArray[i].ch]);
-//        }
+        System.out.println("Ennen:");
+        for (int i = 0; i < nodesArray.length; i++) {
+            if(nodesArray[i].freq != 0)
+                System.out.println("Merkki: " + nodesArray[i].ch + " Huff: " + codes[nodesArray[i].ch]);
+        }
         
         FileReader fr = new FileReader("compressed.bin");
         System.out.println("Tavuja alussa: "+fr.fis.available());
@@ -60,11 +60,11 @@ public class Huffman {
         fr.readCodes();
         System.out.println("dict lukemisen jälkeen: "+fr.fis.available());
         
-//        System.out.println("Jälkeen:");
-//        for (int i = 0; i < fr.codes.length; i++) {
-//            if(fr.codes[i] != null)
-//            System.out.println("Merkki: " + i + " Huff: " + fr.codes[i]);
-//        }
+        System.out.println("Jälkeen:");
+        for (int i = 0; i < fr.codes.length; i++) {
+            if(fr.codes[i] != null)
+            System.out.println("Merkki: " + i + " Huff: " + fr.codes[i]);
+        }
         fr.handleCodes();        
         fr.readFile();
     }
