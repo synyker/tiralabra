@@ -1,4 +1,3 @@
-
 Pizza&Chili Corpus
 Compressed Indexes and their Testbeds
 The Italian mirror | The Chilean mirror
@@ -110,6 +109,6 @@ XML 	50.00 	5.230 (65.37%) 	3.294 (41.17%) 	2.007 (25.09%) 	1.322 (16.53%) 	0.95
 	  	(1 -empty- context) 	(97 contexts) 	(7,191 contexts) 	(152,393 contexts) 	(1,040,864 contexts) 	( 3,245,554 contexts)
 
 
-Send Mail to Us | © P. Ferragina and G. Navarro, Last update: September, 2005.
+Send Mail to Us |  P. Ferragina and G. Navarro, Last update: September, 2005.
 
 

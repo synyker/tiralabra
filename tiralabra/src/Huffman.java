@@ -17,7 +17,7 @@ import java.util.PriorityQueue;
 public class Huffman {
     
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        String filename = "test.txt";
+        String filename = "test7.txt";
         FrequencyCalculator calc = new FrequencyCalculator(filename);
         calc.makeNodeTable();
         Node[] nodesArray = calc.getNodeTable();
@@ -43,22 +43,28 @@ public class Huffman {
         fw.closeStreams();
         
         
-        System.out.println("Ennen:");
-        for (int i = 0; i < nodesArray.length; i++) {
-            if(nodesArray[i].freq != 0)
-                System.out.println("Merkki: " + nodesArray[i].ch + " Huff: " + codes[nodesArray[i].ch]);
-        }
+//        System.out.println("Ennen:");
+//        for (int i = 0; i < nodesArray.length; i++) {
+//            if(nodesArray[i].freq != 0)
+//                System.out.println("Merkki: " + nodesArray[i].ch + " Huff: " + codes[nodesArray[i].ch]);
+//        }
         
         FileReader fr = new FileReader("compressed.bin");
+        System.out.println("Tavuja alussa: "+fr.fis.available());
         fr.readDictionaryLength();
-        fr.readCodes();
         
-        System.out.println("Jälkeen:");
-        for (int i = 0; i < fr.codes.length; i++) {
-            if(fr.codes[i] != null)
-            System.out.println("Merkki: " + i + " Huff: " + fr.codes[i]);
-            
-        }
+        System.out.println("Dictionaryn pituus: "+fr.dictionaryLength);
+        System.out.println("erotus: "+ (fr.fis.available()-fr.dictionaryLength));
+        
+        
+        fr.readCodes();
+        System.out.println("dict lukemisen jälkeen: "+fr.fis.available());
+        
+//        System.out.println("Jälkeen:");
+//        for (int i = 0; i < fr.codes.length; i++) {
+//            if(fr.codes[i] != null)
+//            System.out.println("Merkki: " + i + " Huff: " + fr.codes[i]);
+//        }
         fr.handleCodes();        
         fr.readFile();
     }

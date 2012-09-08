@@ -127,10 +127,17 @@ public class FileWriter {
         }
     }
     
+    /**
+     * Polls the correct amount of bits from the bitQueue and calls for bitsToByte.
+     * If there's 8 or more bits in the queue, the amount of bits to be polled
+     * is always 8. If not, the amount is the size of the queue.
+     * The for-loop assigns as many bits as needed into the boolean-array. Then
+     * the method calls for the bitsToByte-method, which takes a boolean-array
+     * as a parameter and returns an integer that is cast into a byte and
+     * written to the compressed file.
+     * @throws IOException 
+     */
     public void makeBytes() throws IOException {
-        int bitsWritten = 0;
-        int byteBits;
-        int data;
         boolean[] bitTable = new boolean[8];
         int poll;
         
@@ -147,6 +154,12 @@ public class FileWriter {
         out.write(b);
     }
     
+    /**
+     * Takes a boolean-array as the parameter and returns it as an integer.
+     * 
+     * @param bits boolean-array of 8 boolean values
+     * @return 
+     */
     public static int bitsToByte(boolean[] bits) {
         if (bits == null || bits.length != 8) {
             throw new IllegalArgumentException();

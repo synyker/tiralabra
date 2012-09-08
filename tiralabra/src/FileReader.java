@@ -74,7 +74,7 @@ public class FileReader {
         String code;
         int bytesRead = 0;
 
-        while (bytesRead < dictionaryLength) {
+        while (bytesRead <= dictionaryLength) {
             code = "";
             read = fis.read();
             bytesRead += 1;
