@@ -1,3 +1,5 @@
+package tiralabra;
+
 
 /**
  * This is an implementation of a basic node, used by multiple data structures.

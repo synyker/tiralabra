@@ -1,3 +1,5 @@
+package tiralabra;
+
 
 /**
  * This class generates the Huffman-codes for each character in the input file.
