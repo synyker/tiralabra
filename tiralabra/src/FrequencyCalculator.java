@@ -3,18 +3,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- *
- * @author jonnaira
+ * This class calculates the frequencies for each different byte/character in 
+ * the input file.
+ * @author Jonne Airaksinen
  */
 public class FrequencyCalculator {
     
@@ -22,6 +15,15 @@ public class FrequencyCalculator {
     int[] freqTable;
     Node[] nodeTable = new Node[256];
     
+    /**
+     * The constructor initializes everything needed for the class to work.
+     * The constructor also actually reads all the bytes from the input file
+     * and increments the frequency in the corresponding index of the integer
+     * array containing the frequencies.
+     * @param filename
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public FrequencyCalculator(String filename) throws FileNotFoundException, IOException {
         this.filename = filename;
         File file = new File(filename);
@@ -36,10 +38,19 @@ public class FrequencyCalculator {
         fis.close();
     }
     
+    /**
+     * Basic get-method for the nodeTable.
+     * @return Node[] nodeTable containing Nodes that have the character codes 
+     * and the corresponding frequencies written into them.
+     */
     public Node[] getNodeTable() {
         return this.nodeTable;
     }
     
+    /**
+     * Creates Nodes according to the frequencies calculated.
+     * 
+     */
     public void makeNodeTable() {
         for (int i = 0; i < freqTable.length; i++) {
                 nodeTable[i] = new Node(i,freqTable[i]);

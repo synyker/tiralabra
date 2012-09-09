@@ -165,7 +165,7 @@ public class FileReader {
      */
     
     public void readFile() throws IOException {
-        queue = new BitQueue(256);
+        queue = new BitQueue(512);
         int read;
         boolean[] bitsFromByte;
         
@@ -232,6 +232,10 @@ public class FileReader {
     
     /**
      * A method used for converting bytes into bits.
+     * Loops through the boolean-array of 8 bits. The first bit is the most 
+     * meaningful, so it is handled first. If the boolean value is true, the 
+     * integer value of the first bit is 1 shifted 7 places left, in other words
+     * 128. The 2nd bit equals to 64 and so on.
      * @param data integer value of the byte.
      * @return a boolean array containing the 8 bits in the original byte.
      */

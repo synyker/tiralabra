@@ -1,18 +1,10 @@
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  * The main class. Creates instances of all the required classes.
- * @author jonnaira
+ * @author Jonne Airaksinen
  */
 public class Huffman {
     

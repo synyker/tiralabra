@@ -1,9 +1,5 @@
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * The class used for compressing the input file.
@@ -174,6 +170,10 @@ public class FileWriter {
         return data;
     }
     
+    /**
+     * Closes the input and output streams.
+     * @throws IOException 
+     */
     public void closeStreams() throws IOException {
         fis.close();
         out.close();
